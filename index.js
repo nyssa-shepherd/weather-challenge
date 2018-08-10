@@ -13,5 +13,23 @@ function cleanData(weatherData) {
     !weatherObj[date] ? weatherObj[date] = [forecast] : weatherObj[date] = [...weatherObj[date], forecast];
     return weatherObj;
   }, {});
-  console.log(forecastObj);
+
+  renderCards(forecastObj);
+}
+
+function renderCards(forecastObj) {
+  let days = Object.keys(forecastObj);
+  days.shift();
+  console.log(forecastObj)
+
+  days.forEach(day => {
+    const formattedDate = new Date(day).toDateString();
+    $('#card-container').append(`
+      <div id='${day} class='card'>
+        <h2>${formattedDate}</h2>
+        <img id='main-pic' src='http://openweathermap.org/img/w/${forecastObj[day][5].weather[0].icon}.png'/>
+        <footer></footer>
+      </div>
+    `)
+  });
 }
