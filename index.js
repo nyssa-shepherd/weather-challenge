@@ -18,6 +18,14 @@ function cleanData(weatherData) {
   renderCards(forecastObj);
 }
 
+function findAvgTemp(day, forecastObj, type) {
+  let average = forecastObj[day].reduce((avg, forecast) => {
+    avg += forecast.main[type];
+    return Math.round(avg / forecastObj[day].length);
+  }, 0);
+  return average;
+}
+
 function renderCards(forecastObj) {
   let days = Object.keys(forecastObj);
   days.shift();
@@ -28,6 +36,7 @@ function renderCards(forecastObj) {
       <div id=${day} class='card'>
         <h2>${formattedDate}</h2>
         <img id='main-pic' src='http://openweathermap.org/img/w/${forecastObj[day][5].weather[0].icon}.png'/>
+        <h3>${findAvgTemp(day, forecastObj, 'temp_min')}&#8457 | ${findAvgTemp(day, forecastObj, 'temp_max')}&#8457</h3>
         <footer class='show-more'>
           <img class='arrow-icon' src='https://www.iconsdb.com/icons/preview/color/D9D9D9/arrow-204-xxl.png'/>
         </footer>
