@@ -20,16 +20,29 @@ function cleanData(weatherData) {
 function renderCards(forecastObj) {
   let days = Object.keys(forecastObj);
   days.shift();
-  console.log(forecastObj)
 
   days.forEach(day => {
     const formattedDate = new Date(day).toDateString();
     $('#card-container').append(`
-      <div id='${day} class='card'>
+      <div id=${day} class='card'>
         <h2>${formattedDate}</h2>
         <img id='main-pic' src='http://openweathermap.org/img/w/${forecastObj[day][5].weather[0].icon}.png'/>
-        <footer></footer>
       </div>
-    `)
+    `);
+
+    days.forEach(day => {
+      forecastObj[day].forEach(forecast => {
+        const date = forecast.dt_txt.split(' ');
+        const { temp } = forecast.main;
+
+        $(`#${day}`).append(`
+          <div class='temp-area dont-show' id=${date[0]}>
+            <p>${date[1]}</p>
+            <image src='http://openweathermap.org/img/w/${forecast.weather[0].icon}.png'/>
+            <p>${temp}</p>
+          </div>
+      `);
+      });
+    });
   });
 }
