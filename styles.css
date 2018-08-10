@@ -1,0 +1,15 @@
+#card-container {
+  display: flex;
+}
+
+#main-pic {
+  height: 100px;
+  width: 100px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  margin: 5px;
+  width: 275px;
+}
