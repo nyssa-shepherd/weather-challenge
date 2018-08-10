@@ -35,7 +35,7 @@ function renderCards(forecastObj) {
         const date = forecast.dt_txt.split(' ');
         const { temp } = forecast.main;
 
-        $(`#${day}`).append(`
+        $(`#${date[0]}`).append(`
           <div class='temp-area dont-show' id=${date[0]}>
             <p>${date[1]}</p>
             <image src='http://openweathermap.org/img/w/${forecast.weather[0].icon}.png'/>
