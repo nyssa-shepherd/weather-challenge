@@ -25,7 +25,6 @@ function getFromLocalStorage(location) {
   renderCards(weatherData);
 }
 
-
 function cleanData(weatherData, location) {
   forecastObj = weatherData.list.reduce((weatherObj, forecast) => {
     const date = forecast.dt_txt.split(' ')[0];
