@@ -1,0 +1,28 @@
+{
+  "name": "weatherapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "chai": "^4.1.2",
+    "enzyme": "^3.3.0",
+    "jquery": "^3.3.1",
+    "webpack": "^4.16.5"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nyssakeller/weather-challenge.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nyssakeller/weather-challenge/issues"
+  },
+  "homepage": "https://github.com/nyssakeller/weather-challenge#readme"
+}
