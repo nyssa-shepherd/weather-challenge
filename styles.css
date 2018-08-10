@@ -1,3 +1,40 @@
+#highlight-color {
+  color: rgb(239, 93, 49);
+}
+
+#search-area {
+  align-content: center;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 50px;
+}
+
+#search-input {
+  background-color: whitesmoke;
+  border: none;
+  font-size: 18px;
+  height: 30px;
+  width: 400px;
+}
+
+#search-btn {
+  background-color: rgb(52, 81, 98);
+  border: none;
+  color: white;
+  font-size: 15px;
+  height: 31px;
+  margin-left: 5px;
+  width: 100px;
+}
+
+#search-btn:hover {
+  background-color: rgb(239, 93, 49);
+}
+
+#search-btn:focus, #search-input:focus {
+  outline: none;
+}
+
 #card-container {
   display: flex;
 }
