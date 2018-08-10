@@ -5,7 +5,8 @@ $('#card-container').on('click', (e) => toggleTempDisplay(e));
 
 function search(e) {
   e.preventDefault();
-  const location = $('#search-input').val().toLowerCase();
+  $('.location').remove();
+  const location = $('#search-input').val().toUpperCase();
   $('.card').remove();
   $('#search-input').val('');
   !localStorage[location] ? fetchData(location) : getFromLocalStorage(location);
@@ -20,6 +21,7 @@ async function fetchData(location) {
 
 function getFromLocalStorage(location) {
   const weatherData = JSON.parse(localStorage.getItem([location]));
+  $('.bottom').prepend(`<h2 class='location'>${location}</h2>`);
   renderCards(weatherData);
 }
 
@@ -33,16 +35,18 @@ function cleanData(weatherData, location) {
   }, {});
 
   localStorage.setItem([location], JSON.stringify(forecastObj));
+  $('.bottom').prepend(`<h2 class='location'>${location}</h2>`);
   renderCards(forecastObj);
 }
 
-function findAvgTemp(day, forecastObj, type) {
+function findAvgTemp(day, forecastObj) {
   let average = forecastObj[day].reduce((avg, forecast) => {
-    avg += forecast.main[type];
+    avg += forecast.main.temp_max;
     return Math.round(avg / forecastObj[day].length);
   }, 0);
   return average;
 }
+
 
 function renderCards(forecastObj) {
   let days = Object.keys(forecastObj);
@@ -53,12 +57,14 @@ function renderCards(forecastObj) {
 
     $('#card-container').append(`
       <div id=${day} class='card'>
+        <div class='avg-area'>
           <h2>${date}</h2>
           <img id='main-pic' src='http://openweathermap.org/img/w/${forecastObj[day][5].weather[0].icon}.png'/>
-          <h3>${findAvgTemp(day, forecastObj, 'temp_min')}&#8457 | ${findAvgTemp(day, forecastObj, 'temp_max')}&#8457</h3>
-        <footer class='show-more'>
+          <h3 class='avg-temp'>${findAvgTemp(day, forecastObj)}&#8457</h3>
+        </div>
+          <footer class='show-more'>
           <img class='arrow-icon' src='https://www.iconsdb.com/icons/preview/color/D9D9D9/arrow-204-xxl.png'/>
-        </footer
+        </footer>
       </div>
     `);
   });
