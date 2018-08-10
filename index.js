@@ -1,25 +1,38 @@
 $('#search-btn').on('click', search);
+$('#search-area').on('submit', (e) => search(e));
 $('#card-container').on('click', (e) => toggleTempDisplay(e));
 
 
-async function search() {
-  const inputText = $('#search-input').val();
-  const type = typeof parseInt(inputText) === 'integer' ? 'zip' : 'q';
-  const initialFetch = await fetch(`http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID=e8f0baa7772713571ca243de47d6139d&${type}=${inputText}`);
-  const weatherData = await initialFetch.json();
+function search(e) {
+  e.preventDefault();
+  const location = $('#search-input').val().toLowerCase();
+  $('.card').remove();
   $('#search-input').val('');
-  cleanData(weatherData);
+  !localStorage[location] ? fetchData(location) : getFromLocalStorage(location);
+}
+
+async function fetchData(location) {
+  const type = typeof parseInt(location) === 'integer' ? 'zip' : 'q';
+  const initialFetch = await fetch(`http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID=e8f0baa7772713571ca243de47d6139d&${type}=${location}`);
+  const weatherData = await initialFetch.json();
+  cleanData(weatherData, location);
+}
+
+function getFromLocalStorage(location) {
+  const weatherData = JSON.parse(localStorage.getItem([location]));
+  renderCards(weatherData);
 }
 
 
-function cleanData(weatherData) {
-  const forecastObj = weatherData.list.reduce((weatherObj, forecast) => {
+function cleanData(weatherData, location) {
+  forecastObj = weatherData.list.reduce((weatherObj, forecast) => {
     const date = forecast.dt_txt.split(' ')[0];
     !weatherObj[date] ? weatherObj[date] = [] : null;
     weatherObj[date].push(forecast);
     return weatherObj;
   }, {});
 
+  localStorage.setItem([location], JSON.stringify(forecastObj));
   renderCards(forecastObj);
 }
 
