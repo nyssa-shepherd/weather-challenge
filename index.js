@@ -3,20 +3,29 @@ $('#search-area').on('submit', (e) => search(e));
 $('#card-container').on('click', (e) => toggleTempDisplay(e));
 
 
-async function search(e) {
+function search(e) {
   e.preventDefault();
-
+  $('.location').remove();
+  const location = $('#search-input').val().toUpperCase();
   $('.card').remove();
-  const inputText = $('#search-input').val();
-  const type = typeof parseInt(inputText) === 'integer' ? 'zip' : 'q';
-  const initialFetch = await fetch(`http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID=e8f0baa7772713571ca243de47d6139d&${type}=${inputText}`);
-  const weatherData = await initialFetch.json();
   $('#search-input').val('');
-  cleanData(weatherData);
+  !localStorage[location] ? fetchData(location) : getFromLocalStorage(location);
 }
 
+async function fetchData(location) {
+  const type = typeof parseInt(location) === 'integer' ? 'zip' : 'q';
+  const initialFetch = await fetch(`http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID=e8f0baa7772713571ca243de47d6139d&${type}=${location}`);
+  const weatherData = await initialFetch.json();
+  cleanData(weatherData, location);
+}
 
-function cleanData(weatherData) {
+function getFromLocalStorage(location) {
+  const weatherData = JSON.parse(localStorage.getItem([location]));
+  $('.bottom').prepend(`<h2 class='location'>${location}</h2>`);
+  renderCards(weatherData);
+}
+
+function cleanData(weatherData, location) {
   forecastObj = weatherData.list.reduce((weatherObj, forecast) => {
     const date = forecast.dt_txt.split(' ')[0];
     !weatherObj[date] ? weatherObj[date] = [] : null;
@@ -24,16 +33,19 @@ function cleanData(weatherData) {
     return weatherObj;
   }, {});
 
+  localStorage.setItem([location], JSON.stringify(forecastObj));
+  $('.bottom').prepend(`<h2 class='location'>${location}</h2>`);
   renderCards(forecastObj);
 }
 
-function findAvgTemp(day, forecastObj, type) {
+function findAvgTemp(day, forecastObj) {
   let average = forecastObj[day].reduce((avg, forecast) => {
-    avg += forecast.main[type];
-    return Math.round(avg / forecastObj[day].length);
+    avg += forecast.main.temp_max;
+    return avg;
   }, 0);
   return average;
 }
+
 
 function renderCards(forecastObj) {
   let days = Object.keys(forecastObj);
@@ -41,15 +53,19 @@ function renderCards(forecastObj) {
 
   days.forEach(day => {
     const date = new Date(day).toDateString();
+    let avgTemp = findAvgTemp(day, forecastObj) / forecastObj[day].length;
+    avgTemp = Math.round((avgTemp * 9/5) - 459.67);
 
     $('#card-container').append(`
       <div id=${day} class='card'>
+        <div class='avg-area'>
           <h2>${date}</h2>
           <img id='main-pic' src='http://openweathermap.org/img/w/${forecastObj[day][5].weather[0].icon}.png'/>
-          <h3>${findAvgTemp(day, forecastObj, 'temp_min')}&#8457 | ${findAvgTemp(day, forecastObj, 'temp_max')}&#8457</h3>
-        <footer class='show-more'>
+          <h3 class='avg-temp'>${avgTemp}&#8457</h3>
+        </div>
+          <footer class='show-more'>
           <img class='arrow-icon' src='https://www.iconsdb.com/icons/preview/color/D9D9D9/arrow-204-xxl.png'/>
-        </footer
+        </footer>
       </div>
     `);
   });
