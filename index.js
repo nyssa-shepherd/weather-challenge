@@ -1,4 +1,5 @@
 $('#search-btn').on('click', search);
+$('#card-container').on('click', (e) => toggleTempDisplay(e));
 
 async function search() {
   const zip = $('#search-input').val();
@@ -27,7 +28,7 @@ function renderCards(forecastObj) {
       <div id=${day} class='card'>
         <h2>${formattedDate}</h2>
         <img id='main-pic' src='http://openweathermap.org/img/w/${forecastObj[day][5].weather[0].icon}.png'/>
-        <footer>
+        <footer class='show-more'>
           <img class='arrow-icon' src='https://www.iconsdb.com/icons/preview/color/D9D9D9/arrow-204-xxl.png'/>
         </footer>
       </div>
@@ -50,4 +51,12 @@ function renderCards(forecastObj) {
       });
     });
   });
+}
+
+function toggleTempDisplay(e) {
+  if ($(e.target).hasClass('show-more')) {
+    let siblings = $(e.target).siblings();
+    siblings.splice(0, 2);
+    $(siblings).toggleClass('dont-show');
+  }
 }
