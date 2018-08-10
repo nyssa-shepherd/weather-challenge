@@ -42,7 +42,7 @@ function cleanData(weatherData, location) {
 function findAvgTemp(day, forecastObj) {
   let average = forecastObj[day].reduce((avg, forecast) => {
     avg += forecast.main.temp_max;
-    return Math.round(avg / forecastObj[day].length);
+    return avg;
   }, 0);
   return average;
 }
@@ -54,13 +54,15 @@ function renderCards(forecastObj) {
 
   days.forEach(day => {
     const date = new Date(day).toDateString();
+    let avgTemp = findAvgTemp(day, forecastObj) / forecastObj[day].length;
+    avgTemp = Math.round((avgTemp * 9/5) - 459.67);
 
     $('#card-container').append(`
       <div id=${day} class='card'>
         <div class='avg-area'>
           <h2>${date}</h2>
           <img id='main-pic' src='http://openweathermap.org/img/w/${forecastObj[day][5].weather[0].icon}.png'/>
-          <h3 class='avg-temp'>${findAvgTemp(day, forecastObj)}&#8457</h3>
+          <h3 class='avg-temp'>${avgTemp}&#8457</h3>
         </div>
           <footer class='show-more'>
           <img class='arrow-icon' src='https://www.iconsdb.com/icons/preview/color/D9D9D9/arrow-204-xxl.png'/>
