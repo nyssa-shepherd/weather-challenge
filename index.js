@@ -33,13 +33,15 @@ function renderCards(forecastObj) {
     days.forEach(day => {
       forecastObj[day].forEach(forecast => {
         const date = forecast.dt_txt.split(' ');
-        const { temp } = forecast.main;
+        const time = moment(date[1], 'HH:mm:ss').format('h A');
+        let { temp } = forecast.main;
+        temp = Math.round((temp * 9/5) - 459.67);
 
         $(`#${date[0]}`).append(`
           <div class='temp-area dont-show' id=${date[0]}>
-            <p>${date[1]}</p>
+            <p>${time}</p>
             <image src='http://openweathermap.org/img/w/${forecast.weather[0].icon}.png'/>
-            <p>${temp}</p>
+            <p>${temp}&#8457</p>
           </div>
       `);
       });
