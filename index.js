@@ -1,8 +1,10 @@
 $('#search-btn').on('click', search);
+$('#search-area').on('submit', (e) => search(e));
 $('#card-container').on('click', (e) => toggleTempDisplay(e));
 
 
-async function search() {
+async function search(e) {
+  e.preventDefault();
   const inputText = $('#search-input').val();
   const type = typeof parseInt(inputText) === 'integer' ? 'zip' : 'q';
   const initialFetch = await fetch(`http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID=e8f0baa7772713571ca243de47d6139d&${type}=${inputText}`);
