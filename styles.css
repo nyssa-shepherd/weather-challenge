@@ -13,3 +13,23 @@
   margin: 5px;
   width: 275px;
 }
+
+.temp-area {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.dont-show {
+  display: none;
+}
+
+.arrow-icon {
+  height: 15px;
+  padding: 8px;
+  width: 15px;
+}
+
+footer {
+  background-color: grey;
+}
