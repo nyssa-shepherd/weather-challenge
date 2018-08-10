@@ -45,6 +45,8 @@
 }
 
 .card {
+  background-color: whitesmoke;
+  color: rgb(78, 88, 93);
   display: flex;
   flex-direction: column;
   margin: 5px;
@@ -54,7 +56,7 @@
 .temp-area {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .dont-show {
