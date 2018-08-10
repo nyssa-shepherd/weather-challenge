@@ -1,12 +1,16 @@
 $('#search-btn').on('click', search);
 $('#card-container').on('click', (e) => toggleTempDisplay(e));
 
+
 async function search() {
-  const zip = $('#search-input').val();
-  const initialFetch = await fetch(`http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID=e8f0baa7772713571ca243de47d6139d&zip=${zip}`);
+  const inputText = $('#search-input').val();
+  const type = typeof parseInt(inputText) === 'integer' ? 'zip' : 'q';
+  const initialFetch = await fetch(`http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID=e8f0baa7772713571ca243de47d6139d&${type}=${inputText}`);
   const weatherData = await initialFetch.json();
-  cleanData(weatherData)
+  $('#search-input').val('');
+  cleanData(weatherData);
 }
+
 
 function cleanData(weatherData) {
   const forecastObj = weatherData.list.reduce((weatherObj, forecast) => {
@@ -15,7 +19,6 @@ function cleanData(weatherData) {
     weatherObj[date].push(forecast);
     return weatherObj;
   }, {});
-  console.log(forecastObj)
 
   renderCards(forecastObj);
 }
