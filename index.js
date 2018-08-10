@@ -27,6 +27,9 @@ function renderCards(forecastObj) {
       <div id=${day} class='card'>
         <h2>${formattedDate}</h2>
         <img id='main-pic' src='http://openweathermap.org/img/w/${forecastObj[day][5].weather[0].icon}.png'/>
+        <footer>
+          <img class='arrow' src='https://www.iconsdb.com/icons/preview/color/D9D9D9/arrow-204-xxl.png'/>
+        </footer>
       </div>
     `);
 

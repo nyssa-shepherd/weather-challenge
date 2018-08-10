@@ -13,3 +13,9 @@
   margin: 5px;
   width: 275px;
 }
+
+.temp-area {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
