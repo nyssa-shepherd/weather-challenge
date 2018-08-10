@@ -2,10 +2,13 @@ $('#search-btn').on('click', search);
 $('#card-container').on('click', (e) => toggleTempDisplay(e));
 
 async function search() {
-  const zip = $('#search-input').val();
-  const initialFetch = await fetch(`http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID=e8f0baa7772713571ca243de47d6139d&zip=${zip}`);
-  const weatherData = await initialFetch.json();
-  cleanData(weatherData)
+  async function search() {
+    const inputText = $('#search-input').val();
+    const type = typeof parseInt(inputText) === 'integer' ? 'zip' : 'q';
+    const initialFetch = await fetch(`http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID=e8f0baa7772713571ca243de47d6139d&${type}=${inputText}`);
+    const weatherData = await initialFetch.json();
+    cleanData(weatherData)
+  }
 }
 
 function cleanData(weatherData) {
